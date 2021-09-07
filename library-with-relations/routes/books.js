@@ -20,6 +20,10 @@ router.get('/books', (req, res, next) => {
 router.post('/books', (req, res, next) => {
 	console.log(req.body);
 	const { title, description, rating, author } = req.body;
+	const list = '';
+	list += '<option select></option>'
+	// 
+	// res.render({list: list})
 	// create a new book in the database
 	Book.create({
 		title: title,

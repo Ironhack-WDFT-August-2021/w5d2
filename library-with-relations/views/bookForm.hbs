@@ -6,7 +6,7 @@
 	{{!-- <label for="author">Author: </label>
 	<input type="text" name="author" id="author"> --}}
 
-	<select name="author" multiple>
+	<select name="author">
 		{{#each authors}}
 			<option value="{{_id}}">{{name}} {{lastName}}</option>
 		{{/each}}
