@@ -3,7 +3,18 @@ const Schema = mongoose.Schema;
 const bookSchema = new Schema({
 	title: String,
 	description: String,
-	author: String,
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: 'Author'
+	},
+	reviews: [
+		{
+			user: String,
+			text: String,
+			// this object will not get a mongo object id
+			// _id: false
+		}
+	],
 	rating: Number
 });
 

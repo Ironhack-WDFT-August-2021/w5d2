@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { render } = require("../app");
 const Book = require('../models/Book');
+const Author = require('../models/Author');
 
 router.get('/books', (req, res, next) => {
 	// get all the books from the db
@@ -37,9 +37,14 @@ router.post('/books', (req, res, next) => {
 		.catch(err => next(err));
 });
 
-
+// this displays the form to add a book
 router.get('/books/add', (req, res, next) => {
-	res.render('bookForm');
+	// we need to get all the authors from the db
+	Author.find()
+		.then(authorsFromDB => {
+			console.log(authorsFromDB);
+			res.render('bookForm', { authors: authorsFromDB });
+		})
 });
 
 router.get('/books/:id', (req, res, next) => {
@@ -49,7 +54,7 @@ router.get('/books/:id', (req, res, next) => {
 	// const bookId = req.params.id;
 	console.log(req.params.id);
 	// get the book with the requested id
-	Book.findById(req.params.id)
+	Book.findById(req.params.id).populate('author')
 		.then(bookFromDB => {
 			console.log(bookFromDB);
 			// render a detail view
@@ -110,6 +115,19 @@ router.get('/books/delete/:id', (req, res, next) => {
 		})
 });
 
+router.post('/books/:id/reviews', (req, res, next) => {
+	const bookId = req.params.id;
+	const { user, text } = req.body;
+	Book.findByIdAndUpdate(bookId, { $push: { reviews: { user: user, text: text } } }, { new: true })
+		.then(bookFromDB => {
+			console.log(bookFromDB);
+			// redirect to the detail view of this book
+			res.redirect(`/books/${bookId}`);
+		})
+		.catch(err => {
+			next(err);
+		})
+});
 
 
 module.exports = router;
