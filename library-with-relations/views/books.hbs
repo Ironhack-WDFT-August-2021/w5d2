@@ -1,0 +1,7 @@
+<h1>All the books 📚 🦊</h1>
+{{#each bookList}}
+	<a href="/books/{{_id}}">
+		<p>{{title}}</p>
+	</a>
+{{/each}}
+<a href="/books/add">Add a book to the database</a>
